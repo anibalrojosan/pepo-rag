@@ -2,10 +2,27 @@
 
 This document records the tests performed to select the most suitable Large Language Model (LLM) and embedding model for the local environment.
 
+All models were tested using the `ollama run` command with the `--verbose` flag with the following hardware:
+
 ## Test Hardware
-- **CPU:** [To be completed]
-- **GPU/VRAM:** [To be completed]
-- **RAM:** [To be completed]
+
+The benchmark was performed on an entry-level environment with the following detected specifications:
+
+- **GPU:** NVIDIA GeForce GTX 1050 with Max-Q Design
+  - **VRAM:** 3GB GDDR5
+  - **CUDA:** 13.0 (Driver 581.83)
+- **CPU:** Intel(R) Core(TM) i5-8265U @ 1.60GHz
+  - **Cores:** 8 (4 physical / 8 threads)
+  - **SIMD:** AVX2 Supported
+- **RAM:** 24.0 GB DDR4 @ 2400 MHz
+  - **Composition:** 2 SODIMM slots (24.0 GB Total)
+  - **Available:** ~5.0 GB during high-load tests (based on system snapshots)
+- **Performance Tier:** ULTRA LOW (according to `llm-checker`)
+- **OS**: WSL Ubuntu 22.04 LTS (Windows 11)
+
+### Detected Technical Constraints:
+1. **VRAM Limit (3GB):** Models exceeding this size (such as Llama 3.1 8B or Qwen 2.5 7B, which are ~4.7GB) suffer massive performance degradation as they require *offloading* to system RAM.
+2. **Ideal Model Size:** To maintain 100% GPU execution and achieve low latencies (TTFT < 1s), the model size must be under **2.5GB**. This validates the selection of **2B and 3B parameter models** for this specific hardware.
 
 ---
 
@@ -16,17 +33,22 @@ This document records the tests performed to select the most suitable Large Lang
 | Model | Size | Parameters | Quantization | Notes |
 | :--- | :--- | :--- | :--- | :--- |
 | Llama 3.1 8B | ~4.7GB | 8B | Q4_K_M | Industry benchmark. |
+| Llama 3.2 3B | ~1.5GB | 3.21B | Q4_K_M | Optimized for mobile devices and limited resources hardware. |
 | Qwen 2.5 7B | ~4.7GB | 7B | Q4_K_M | Excellent in code and technical logic. |
 | Qwen 2.5 3B | ~3.0GB | 3B | Q4_K_M | Balanced model for RAG. |
-| Mistral 7B | ~4.1GB | 7B | Q4_0 | Very robust for RAG. |
 | Phi-3.5 Mini | ~2.3GB | 3.8B | Q4_K_M | Ultra-fast, ideal for CPUs. |
+| Granite3 Dense 2B | ~2.0GB | 2B | Q4_K_M | High-ranking model on MTEB leaderboard for its size. |
 
 ### 1.2 Evaluation Methodology
 
 #### 1.2.1 Performance Benchmark (Latency)
 Response time is measured using a standard technical prompt:
-- **TTFT (Time To First Token):** Perceived latency.
+- **TTFT (Time To First Token):** Perceived latency (`load duration` + `prompt evaluation duration`).
 - **TPS (Tokens Per Second):** Generation speed.
+
+All tests were performed with only the IDE open (all other applications closed) and the following prompt: 
+
+> Explain in detail what a Vector Database is and why it is fundamental for a RAG (Retrieval-Augmented Generation) system. Respond in Spanish.
 
 #### 1.2.2 Quality Evaluation (Evals)
 A mini-dataset of "Golden Questions" based on a sample technical book will be used:
@@ -36,12 +58,14 @@ A mini-dataset of "Golden Questions" based on a sample technical book will be us
 
 ### 1.3 Test Results
 
-| Model | TPS (Local) | RAG Quality (1-5) | JSON Follow | Recommended for |
-| :--- | :--- | :--- | :--- | :--- |
-| Llama 3.1 8B | | | | High-end Local |
-| Qwen 2.5 7B | | | | Balanced (Recommended) |
-| Qwen 2.5 3B | | | | Mid-range / Laptop |
-| Phi-3.5 Mini | | | | Low-end / CPU only |
+| Model | TPS (Local) | TTFT (s) | RAG Quality (1-5) | JSON Follow | Recommended for |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Llama 3.2 3B** | ~9.20 | ~0.81 | 4.5 | Yes | **Very good quality and fast enough for this task** |
+| **Qwen 2.5 3B** | ~11.70 | ~0.55 | 4 | Yes | **Balanced, short and concise answers / Best tradeoff between speed and quality** |
+| **Granite 2B** | ~21.50 | ~0.26 | 3 | Yes | **Ultra-fast but very short answers / Could be useful for task that requires short answers** |
+| Llama 3.1 8B | ~3.26 | ~1.84 | 5 | Yes | High-end but very slow on this hardware |
+| Qwen 2.5 7B | ~3.80 | ~1.92 | 4 | Yes | Balanced (Slow on this hardware) |
+| Phi-3.5 Mini | ~6.39 | ~0.71 | 2 | No | Low quality responses, hallucinations, not recommended for this task |
 
 ---
 
