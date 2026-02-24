@@ -1,0 +1,12 @@
+# Python & Environment
+__pycache__/
+.venv/
+.env
+
+# Local Data & Database (Privacy)
+data/
+.postgres_data/
+
+# OS & IDE
+.DS_Store
+.cursor/
