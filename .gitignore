@@ -1,12 +1,28 @@
-# Python & Environment
+# Python
 __pycache__/
+*.py[cod]
+*$py.class
 .venv/
-.env
+.pytest_cache/
+.ruff_cache/
+dist/
+build/
 
-# Local Data & Database (Privacy)
+# Environment
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+
+# Data
 data/
-.postgres_data/
 
 # OS & IDE
 .DS_Store
 .cursor/
+.vscode/
+
+# Project planning
+SPRINTS.md
