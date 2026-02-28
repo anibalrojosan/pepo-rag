@@ -67,6 +67,15 @@ A mini-dataset of "Golden Questions" based on a sample technical book will be us
 | Qwen 2.5 7B | ~3.80 | ~1.92 | 4 | Yes | Balanced (Slow on this hardware) |
 | Phi-3.5 Mini | ~6.39 | ~0.71 | 2 | No | Low quality responses, hallucinations, not recommended for this task |
 
+### 1.4 Selected models comparison (2026-02-27)
+
+| Model | TPS (Tokens/s) | TTFT (s) | Avg Duration (s) | Notes |
+| :--- | :--- | :--- | :--- | :--- |
+| **granite3-dense:2b** | **19.42** | **1.13** | **11.72** | **Best Performance.** Ultra-fast generation and lowest latency. Ideal for responsive chat. |
+| **qwen2.5:3b** | 13.58 | 1.43 | 25.81 | **Best Balance.** Good speed and likely better reasoning than 2B models. Strong contender. |
+| llama3.2:3b | 8.17 | 2.91 | 33.92 | Acceptable speed, but significantly slower than Granite and Qwen. |
+| llama3.1:latest | 3.75 | 6.08 | 82.07 | **Not Recommended.** Too heavy for current hardware (high latency, low TPS). |
+
 ---
 
 ## 2. Embedding Models (Vectorization)
@@ -105,4 +114,14 @@ The embedding model is the "eyes" of the RAG system. We evaluate how well it fin
 ---
 
 ## Conclusions
-*(To be completed after running evaluation scripts in Phase 2 of the Roadmap)*
+
+Based on the automated benchmark performed on 2026-02-27:
+
+1.  **Primary Model Selection:** **`qwen2.5:3b`** is kept as the primary model for the RAG system.
+    *   **Reasoning:** With ~13.6 TPS, it is still very usable and offers a larger parameter count (3B vs 2B) which may provide better reasoning capabilities for complex queries if Granite proves too simple.
+
+2.  **Alternative/Fallback:** **`granite3-dense:2b`** is selected as the fallback model for the RAG system.
+    *   **Reasoning:** It achieves ~19.4 TPS, which is nearly double the speed of Llama 3.2, and has a very low Time To First Token (1.13s), ensuring a snappy user experience on the GTX 1050 (3GB VRAM). 
+
+3.  **Hardware Limitations Confirmed:**
+    *   Models larger than 3B parameters (like `llama3.1:latest`) struggle significantly, dropping to < 4 TPS with high latency (> 6s TTFT), confirming the initial hypothesis that 8B models are not viable for this specific hardware configuration without heavy quantization or offloading.
