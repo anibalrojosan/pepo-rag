@@ -1,0 +1,171 @@
+[
+  {
+    "model": "ollama:qwen2.5:3b",
+    "json_parse_rate": 100.0,
+    "native_schema_valid_rate": 0.0,
+    "normalized_schema_valid_rate": 100.0,
+    "avg_latency_native": 0,
+    "avg_latency_normalized": 4.658951663970948,
+    "details": [
+      {
+        "success": true,
+        "duration": 5.688135623931885,
+        "json_ok": true,
+        "native_schema_ok": false,
+        "native_response": null,
+        "native_schema_error": "2 validation errors for RagResponse\nconfidence_score\n  Field required [type=missing, input_value={'answer': 'Processes are... threads or processes.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing\nsources_used\n  Field required [type=missing, input_value={'answer': 'Processes are... threads or processes.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing",
+        "normalized_schema_ok": true,
+        "response": {
+          "answer": "Processes are unique entities that can execute different applications concurrently, they usually involve its own resources like memory space and file handles but share CPU scheduling. Threads, on the other hand, are smaller units of work than processes; however, unlike processes, a single thread belongs to a process sharing resources such as memory and files. Furthermore, context switching among threads consumes less time compared to switching between independent threads or processes.",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "normalized_schema_error": null,
+        "parsed_json": {
+          "answer": "Processes are unique entities that can execute different applications concurrently, they usually involve its own resources like memory space and file handles but share CPU scheduling. Threads, on the other hand, are smaller units of work than processes; however, unlike processes, a single thread belongs to a process sharing resources such as memory and files. Furthermore, context switching among threads consumes less time compared to switching between independent threads or processes."
+        },
+        "normalized_json": {
+          "answer": "Processes are unique entities that can execute different applications concurrently, they usually involve its own resources like memory space and file handles but share CPU scheduling. Threads, on the other hand, are smaller units of work than processes; however, unlike processes, a single thread belongs to a process sharing resources such as memory and files. Furthermore, context switching among threads consumes less time compared to switching between independent threads or processes.",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "raw_output": "{\n  \"answer\": \"Processes are unique entities that can execute different applications concurrently, they usually involve its own resources like memory space and file handles but share CPU scheduling. Threads, on the other hand, are smaller units of work than processes; however, unlike processes, a single thread belongs to a process sharing resources such as memory and files. Furthermore, context switching among threads consumes less time compared to switching between independent threads or processes.\"\n}",
+        "error": "2 validation errors for RagResponse\nconfidence_score\n  Field required [type=missing, input_value={'answer': 'Processes are... threads or processes.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing\nsources_used\n  Field required [type=missing, input_value={'answer': 'Processes are... threads or processes.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing",
+        "json_error": null,
+        "question_id": "q1_synthesis"
+      },
+      {
+        "success": true,
+        "duration": 1.4290869235992432,
+        "json_ok": true,
+        "native_schema_ok": false,
+        "native_response": null,
+        "native_schema_error": "2 validation errors for RagResponse\nconfidence_score\n  Field required [type=missing, input_value={'answer': 'Atomicity, Consistency, Isolation'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing\nsources_used\n  Field required [type=missing, input_value={'answer': 'Atomicity, Consistency, Isolation'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing",
+        "normalized_schema_ok": true,
+        "response": {
+          "answer": "Atomicity, Consistency, Isolation",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "normalized_schema_error": null,
+        "parsed_json": {
+          "answer": "Atomicity, Consistency, Isolation"
+        },
+        "normalized_json": {
+          "answer": "Atomicity, Consistency, Isolation",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "raw_output": "{\n  \"answer\": \"Atomicity, Consistency, Isolation\"\n}",
+        "error": "2 validation errors for RagResponse\nconfidence_score\n  Field required [type=missing, input_value={'answer': 'Atomicity, Consistency, Isolation'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing\nsources_used\n  Field required [type=missing, input_value={'answer': 'Atomicity, Consistency, Isolation'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing",
+        "json_error": null,
+        "question_id": "q2_json_list"
+      },
+      {
+        "success": true,
+        "duration": 5.954379558563232,
+        "json_ok": true,
+        "native_schema_ok": false,
+        "native_response": null,
+        "native_schema_error": "3 validation errors for RagResponse\nanswer\n  Field required [type=missing, input_value={'output': 'The provided ...ing an AMD Radeon GPU.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing\nconfidence_score\n  Field required [type=missing, input_value={'output': 'The provided ...ing an AMD Radeon GPU.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing\nsources_used\n  Field required [type=missing, input_value={'output': 'The provided ...ing an AMD Radeon GPU.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing",
+        "normalized_schema_ok": true,
+        "response": {
+          "answer": "The provided guide does not cover the configuration for AMD Radeon GPUs and has no information regarding such a setup. It specifically focuses on CUDA drivers for NVIDIA GPUs, particularly mentioning GTX 10 series, RTX 20 series, and RTX 30 series. There is no mention of AMD or any other GPU manufacturers, hence, it cannot be used for configuring an AMD Radeon GPU.",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "normalized_schema_error": null,
+        "parsed_json": {
+          "output": "The provided guide does not cover the configuration for AMD Radeon GPUs and has no information regarding such a setup. It specifically focuses on CUDA drivers for NVIDIA GPUs, particularly mentioning GTX 10 series, RTX 20 series, and RTX 30 series. There is no mention of AMD or any other GPU manufacturers, hence, it cannot be used for configuring an AMD Radeon GPU."
+        },
+        "normalized_json": {
+          "answer": "The provided guide does not cover the configuration for AMD Radeon GPUs and has no information regarding such a setup. It specifically focuses on CUDA drivers for NVIDIA GPUs, particularly mentioning GTX 10 series, RTX 20 series, and RTX 30 series. There is no mention of AMD or any other GPU manufacturers, hence, it cannot be used for configuring an AMD Radeon GPU.",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "raw_output": "{\n  \"output\": \"The provided guide does not cover the configuration for AMD Radeon GPUs and has no information regarding such a setup. It specifically focuses on CUDA drivers for NVIDIA GPUs, particularly mentioning GTX 10 series, RTX 20 series, and RTX 30 series. There is no mention of AMD or any other GPU manufacturers, hence, it cannot be used for configuring an AMD Radeon GPU.\"\n}",
+        "error": "3 validation errors for RagResponse\nanswer\n  Field required [type=missing, input_value={'output': 'The provided ...ing an AMD Radeon GPU.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing\nconfidence_score\n  Field required [type=missing, input_value={'output': 'The provided ...ing an AMD Radeon GPU.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing\nsources_used\n  Field required [type=missing, input_value={'output': 'The provided ...ing an AMD Radeon GPU.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing",
+        "json_error": null,
+        "question_id": "q3_faithfulness"
+      },
+      {
+        "success": true,
+        "duration": 6.111284971237183,
+        "json_ok": true,
+        "native_schema_ok": false,
+        "native_response": null,
+        "native_schema_error": "3 validation errors for RagResponse\nanswer\n  Field required [type=missing, input_value={'output': {'model_chosen...ecified memory limit.\"}}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing\nconfidence_score\n  Field required [type=missing, input_value={'output': {'model_chosen...ecified memory limit.\"}}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing\nsources_used\n  Field required [type=missing, input_value={'output': {'model_chosen...ecified memory limit.\"}}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing",
+        "normalized_schema_ok": true,
+        "response": {
+          "answer": "Model chosen: Model B. Given the requirement for at least 8GB of RAM and a maximum constraint of 8GB, Model B is the optimal choice with its required 4GB of RAM. Despite having twice the latency (200 ms) as compared to Model A's 100 ms, this higher latency could be acceptable if it allows meeting the specified memory limit.",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "normalized_schema_error": null,
+        "parsed_json": {
+          "output": {
+            "model_chosen": "Model B",
+            "rationale": "Given the requirement for at least 8GB of RAM and a maximum constraint of 8GB, Model B is the optimal choice with its required 4GB of RAM. Despite having twice the latency (200 ms) as compared to Model A's 100 ms, this higher latency could be acceptable if it allows meeting the specified memory limit."
+          }
+        },
+        "normalized_json": {
+          "answer": "Model chosen: Model B. Given the requirement for at least 8GB of RAM and a maximum constraint of 8GB, Model B is the optimal choice with its required 4GB of RAM. Despite having twice the latency (200 ms) as compared to Model A's 100 ms, this higher latency could be acceptable if it allows meeting the specified memory limit.",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "raw_output": "{\n  \"output\": {\n    \"model_chosen\": \"Model B\",\n    \"rationale\": \"Given the requirement for at least 8GB of RAM and a maximum constraint of 8GB, Model B is the optimal choice with its required 4GB of RAM. Despite having twice the latency (200 ms) as compared to Model A's 100 ms, this higher latency could be acceptable if it allows meeting the specified memory limit.\"\n  }\n}",
+        "error": "3 validation errors for RagResponse\nanswer\n  Field required [type=missing, input_value={'output': {'model_chosen...ecified memory limit.\"}}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing\nconfidence_score\n  Field required [type=missing, input_value={'output': {'model_chosen...ecified memory limit.\"}}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing\nsources_used\n  Field required [type=missing, input_value={'output': {'model_chosen...ecified memory limit.\"}}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing",
+        "json_error": null,
+        "question_id": "q4_multihop"
+      },
+      {
+        "success": true,
+        "duration": 4.111871242523193,
+        "json_ok": true,
+        "native_schema_ok": false,
+        "native_response": null,
+        "native_schema_error": "2 validation errors for RagResponse\nconfidence_score\n  Field required [type=missing, input_value={'answer': 'Un deadlock e...ollow_up_questions': []}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing\nsources_used\n  Field required [type=missing, input_value={'answer': 'Un deadlock e...ollow_up_questions': []}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing",
+        "normalized_schema_ok": true,
+        "response": {
+          "answer": "Un deadlock en espa\u00f1ol se define como una situaci\u00f3n en la computaci\u00f3n concurrente donde dos o m\u00e1s procesos est\u00e1n cada uno esperando al otro para liberar un recurso, o m\u00e1s de dos procesos est\u00e1n esperando recursos en cadena circular.",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "normalized_schema_error": null,
+        "parsed_json": {
+          "answer": "Un deadlock en espa\u00f1ol se define como una situaci\u00f3n en la computaci\u00f3n concurrente donde dos o m\u00e1s procesos est\u00e1n cada uno esperando al otro para liberar un recurso, o m\u00e1s de dos procesos est\u00e1n esperando recursos en cadena circular.",
+          "follow_up_questions": []
+        },
+        "normalized_json": {
+          "answer": "Un deadlock en espa\u00f1ol se define como una situaci\u00f3n en la computaci\u00f3n concurrente donde dos o m\u00e1s procesos est\u00e1n cada uno esperando al otro para liberar un recurso, o m\u00e1s de dos procesos est\u00e1n esperando recursos en cadena circular.",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "raw_output": "{\n  \"answer\": \"Un deadlock en espa\u00f1ol se define como una situaci\u00f3n en la computaci\u00f3n concurrente donde dos o m\u00e1s procesos est\u00e1n cada uno esperando al otro para liberar un recurso, o m\u00e1s de dos procesos est\u00e1n esperando recursos en cadena circular.\",\n  \"follow_up_questions\": []\n}",
+        "error": "2 validation errors for RagResponse\nconfidence_score\n  Field required [type=missing, input_value={'answer': 'Un deadlock e...ollow_up_questions': []}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing\nsources_used\n  Field required [type=missing, input_value={'answer': 'Un deadlock e...ollow_up_questions': []}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing",
+        "json_error": null,
+        "question_id": "q5_spanish_instruction"
+      }
+    ]
+  }
+]

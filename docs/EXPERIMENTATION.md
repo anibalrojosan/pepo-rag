@@ -113,6 +113,25 @@ The embedding model is the "eyes" of the RAG system. We evaluate how well it fin
 
 ---
 
+## 3. Qualitative Evaluation (RAG Quality)
+
+### 3.1 Methodology
+To validate the "intelligence" and reliability of the models, a "Golden Dataset" of 5 technical questions was designed, covering:
+- **Synthesis:** Ability to summarize complex concepts.
+- **Extraction:** Ability to list items in JSON format.
+- **Faithfulness:** Ability to admit lack of information (avoiding hallucinations).
+- **Reasoning:** Ability to connect multiple concepts.
+- **Instruction Following:** Ability to follow language and format constraints.
+
+### 3.2 Results (Automated via PydanticAI)
+
+| Model | Success Rate (JSON) | Avg Latency (s) | Faithfulness | Notes |
+| :--- | :--- | :--- | :--- | :--- |
+| **qwen2.5:3b** | *Pending* | *Pending* | *Pending* | *To be populated* |
+| **granite3-dense:2b** | *Pending* | *Pending* | *Pending* | *To be populated* |
+
+---
+
 ## Conclusions
 
 Based on the automated benchmark performed on 2026-02-27:

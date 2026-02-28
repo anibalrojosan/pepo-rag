@@ -2721,6 +2721,7 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "fastapi" },
+    { name = "logfire" },
     { name = "pgvector" },
     { name = "psycopg2-binary" },
     { name = "pydantic-ai" },
@@ -2739,6 +2740,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "fastapi", specifier = ">=0.132.0" },
+    { name = "logfire", specifier = ">=4.25.0" },
     { name = "pgvector", specifier = ">=0.4.2" },
     { name = "psycopg2-binary", specifier = ">=2.9.11" },
     { name = "pydantic-ai", specifier = ">=1.63.0" },
