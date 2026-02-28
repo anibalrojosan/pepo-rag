@@ -16,9 +16,6 @@ build/
 .vscode/
 .idea/
 
-# Data
-data/
-
 # OS & IDE
 .DS_Store
 .cursor/

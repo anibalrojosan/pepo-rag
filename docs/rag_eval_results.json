@@ -1,0 +1,462 @@
+[
+  {
+    "model": "ollama:qwen2.5:3b",
+    "json_parse_rate": 100.0,
+    "native_schema_valid_rate": 0.0,
+    "normalized_json_schema_valid_rate": 100.0,
+    "canonical_valid_rate": 100.0,
+    "avg_latency_native": 0,
+    "avg_latency_normalized_json": 7.7006653308868405,
+    "avg_latency_canonical": 7.7006653308868405,
+    "details": [
+      {
+        "success": true,
+        "duration": 13.216897249221802,
+        "json_ok": true,
+        "native_schema_ok": false,
+        "native_response": null,
+        "native_schema_error": "2 validation errors for RagResponse\nconfidence_score\n  Field required [type=missing, input_value={'answer': 'A process in ...nother entire process.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing\nsources_used\n  Field required [type=missing, input_value={'answer': 'A process in ...nother entire process.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing",
+        "normalized_json_schema_ok": true,
+        "normalized_json_schema_error": null,
+        "canonical_ok": true,
+        "canonical_response": {
+          "answer": "A process in an operating system represents an executing instance of a program which includes its own memory space, where each process is isolated from others. A thread is the smallest unit of processing within a single address space (process). Unlike processes that have their separate execution environment and resources but share the overall memory structure with other processes, threads are lightweight entities sharing most resources such as stack and registers with its parent process. Consequently, switching between threads is faster than switching to another entire process.",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "canonical_error": null,
+        "response": {
+          "answer": "A process in an operating system represents an executing instance of a program which includes its own memory space, where each process is isolated from others. A thread is the smallest unit of processing within a single address space (process). Unlike processes that have their separate execution environment and resources but share the overall memory structure with other processes, threads are lightweight entities sharing most resources such as stack and registers with its parent process. Consequently, switching between threads is faster than switching to another entire process.",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "parsed_json": {
+          "answer": "A process in an operating system represents an executing instance of a program which includes its own memory space, where each process is isolated from others. A thread is the smallest unit of processing within a single address space (process). Unlike processes that have their separate execution environment and resources but share the overall memory structure with other processes, threads are lightweight entities sharing most resources such as stack and registers with its parent process. Consequently, switching between threads is faster than switching to another entire process."
+        },
+        "normalized_json": {
+          "answer": "A process in an operating system represents an executing instance of a program which includes its own memory space, where each process is isolated from others. A thread is the smallest unit of processing within a single address space (process). Unlike processes that have their separate execution environment and resources but share the overall memory structure with other processes, threads are lightweight entities sharing most resources such as stack and registers with its parent process. Consequently, switching between threads is faster than switching to another entire process.",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "canonical_payload": {
+          "answer": "A process in an operating system represents an executing instance of a program which includes its own memory space, where each process is isolated from others. A thread is the smallest unit of processing within a single address space (process). Unlike processes that have their separate execution environment and resources but share the overall memory structure with other processes, threads are lightweight entities sharing most resources such as stack and registers with its parent process. Consequently, switching between threads is faster than switching to another entire process.",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "raw_output": "{\n  \"answer\": \"A process in an operating system represents an executing instance of a program which includes its own memory space, where each process is isolated from others. A thread is the smallest unit of processing within a single address space (process). Unlike processes that have their separate execution environment and resources but share the overall memory structure with other processes, threads are lightweight entities sharing most resources such as stack and registers with its parent process. Consequently, switching between threads is faster than switching to another entire process.\"\n}",
+        "error": "2 validation errors for RagResponse\nconfidence_score\n  Field required [type=missing, input_value={'answer': 'A process in ...nother entire process.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing\nsources_used\n  Field required [type=missing, input_value={'answer': 'A process in ...nother entire process.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing",
+        "json_error": null,
+        "question_id": "q1_synthesis"
+      },
+      {
+        "success": true,
+        "duration": 2.1976094245910645,
+        "json_ok": true,
+        "native_schema_ok": false,
+        "native_response": null,
+        "native_schema_error": "3 validation errors for RagResponse\nanswer\n  Input should be a valid string [type=string_type, input_value=['Atomicity', 'Consistency', 'Durability'], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.12/v/string_type\nconfidence_score\n  Field required [type=missing, input_value={'answer': ['Atomicity', ...istency', 'Durability']}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing\nsources_used\n  Field required [type=missing, input_value={'answer': ['Atomicity', ...istency', 'Durability']}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing",
+        "normalized_json_schema_ok": true,
+        "normalized_json_schema_error": null,
+        "canonical_ok": true,
+        "canonical_response": {
+          "answer": "No answer provided.",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "canonical_error": null,
+        "response": {
+          "answer": "No answer provided.",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "parsed_json": {
+          "answer": [
+            "Atomicity",
+            "Consistency",
+            "Durability"
+          ]
+        },
+        "normalized_json": {
+          "answer": "No answer provided.",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "canonical_payload": {
+          "answer": "No answer provided.",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "raw_output": "{\n  \"answer\": [\n    \"Atomicity\",\n    \"Consistency\",\n    \"Durability\"\n  ]\n}",
+        "error": "3 validation errors for RagResponse\nanswer\n  Input should be a valid string [type=string_type, input_value=['Atomicity', 'Consistency', 'Durability'], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.12/v/string_type\nconfidence_score\n  Field required [type=missing, input_value={'answer': ['Atomicity', ...istency', 'Durability']}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing\nsources_used\n  Field required [type=missing, input_value={'answer': ['Atomicity', ...istency', 'Durability']}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing",
+        "json_error": null,
+        "question_id": "q2_json_list"
+      },
+      {
+        "success": true,
+        "duration": 4.056842088699341,
+        "json_ok": true,
+        "native_schema_ok": false,
+        "native_response": null,
+        "native_schema_error": "3 validation errors for RagResponse\nanswer\n  Field required [type=missing, input_value={'output': 'The informati... relevant to AMR GPUs.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing\nconfidence_score\n  Field required [type=missing, input_value={'output': 'The informati... relevant to AMR GPUs.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing\nsources_used\n  Field required [type=missing, input_value={'output': 'The informati... relevant to AMR GPUs.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing",
+        "normalized_json_schema_ok": true,
+        "normalized_json_schema_error": null,
+        "canonical_ok": true,
+        "canonical_response": {
+          "answer": "The information provided in this guide is specifically focused on the installation of CUDA drivers for NVIDIA GPUs and does not cover the setup of AMD Radeon GPUs. For configuration related to AMD Radeon, you should refer to official documentation or support materials relevant to AMR GPUs.",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "canonical_error": null,
+        "response": {
+          "answer": "The information provided in this guide is specifically focused on the installation of CUDA drivers for NVIDIA GPUs and does not cover the setup of AMD Radeon GPUs. For configuration related to AMD Radeon, you should refer to official documentation or support materials relevant to AMR GPUs.",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "parsed_json": {
+          "output": "The information provided in this guide is specifically focused on the installation of CUDA drivers for NVIDIA GPUs and does not cover the setup of AMD Radeon GPUs. For configuration related to AMD Radeon, you should refer to official documentation or support materials relevant to AMR GPUs."
+        },
+        "normalized_json": {
+          "answer": "The information provided in this guide is specifically focused on the installation of CUDA drivers for NVIDIA GPUs and does not cover the setup of AMD Radeon GPUs. For configuration related to AMD Radeon, you should refer to official documentation or support materials relevant to AMR GPUs.",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "canonical_payload": {
+          "answer": "The information provided in this guide is specifically focused on the installation of CUDA drivers for NVIDIA GPUs and does not cover the setup of AMD Radeon GPUs. For configuration related to AMD Radeon, you should refer to official documentation or support materials relevant to AMR GPUs.",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "raw_output": "{\n  \"output\": \"The information provided in this guide is specifically focused on the installation of CUDA drivers for NVIDIA GPUs and does not cover the setup of AMD Radeon GPUs. For configuration related to AMD Radeon, you should refer to official documentation or support materials relevant to AMR GPUs.\"\n}",
+        "error": "3 validation errors for RagResponse\nanswer\n  Field required [type=missing, input_value={'output': 'The informati... relevant to AMR GPUs.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing\nconfidence_score\n  Field required [type=missing, input_value={'output': 'The informati... relevant to AMR GPUs.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing\nsources_used\n  Field required [type=missing, input_value={'output': 'The informati... relevant to AMR GPUs.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing",
+        "json_error": null,
+        "question_id": "q3_faithfulness"
+      },
+      {
+        "success": true,
+        "duration": 13.431752920150757,
+        "json_ok": true,
+        "native_schema_ok": false,
+        "native_response": null,
+        "native_schema_error": "2 validation errors for RagResponse\nconfidence_score\n  Field required [type=missing, input_value={'answer': \"Based on the ...te its higher latency.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing\nsources_used\n  Field required [type=missing, input_value={'answer': \"Based on the ...te its higher latency.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing",
+        "normalized_json_schema_ok": true,
+        "normalized_json_schema_error": null,
+        "canonical_ok": true,
+        "canonical_response": {
+          "answer": "Based on the given constraints, Model B is the better choice as it fulfills the requirement for a maximum of 8GB RAM. Although Model A has lower latency (100ms vs. 200ms), its higher RAM requirement means it cannot be used within the system's memory constraint of 8GB.",
+          "confidence_score": 0.95,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "canonical_error": null,
+        "response": {
+          "answer": "Based on the given constraints, Model B is the better choice as it fulfills the requirement for a maximum of 8GB RAM. Although Model A has lower latency (100ms vs. 200ms), its higher RAM requirement means it cannot be used within the system's memory constraint of 8GB.",
+          "confidence_score": 0.95,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "parsed_json": {
+          "answer": "Based on the given constraints, Model B is the better choice as it fulfills the requirement for a maximum of 8GB RAM. Although Model A has lower latency (100ms vs. 200ms), its higher RAM requirement means it cannot be used within the system's memory constraint of 8GB.",
+          "confidence": 0.95,
+          "rationale": "The key criterion for decision making, given the constraints on hardware resources, is adherence to the maximum available RAM limit (which in this scenario is 8GB). Since Model A exceeds this limit at 16GB, it cannot be selected. On the other hand, Model B does not exceed the allocated amount of 8GB, making it an acceptable choice despite its higher latency."
+        },
+        "normalized_json": {
+          "answer": "Based on the given constraints, Model B is the better choice as it fulfills the requirement for a maximum of 8GB RAM. Although Model A has lower latency (100ms vs. 200ms), its higher RAM requirement means it cannot be used within the system's memory constraint of 8GB.",
+          "confidence_score": 0.95,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "canonical_payload": {
+          "answer": "Based on the given constraints, Model B is the better choice as it fulfills the requirement for a maximum of 8GB RAM. Although Model A has lower latency (100ms vs. 200ms), its higher RAM requirement means it cannot be used within the system's memory constraint of 8GB.",
+          "confidence_score": 0.95,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "raw_output": "{\n \"answer\": \"Based on the given constraints, Model B is the better choice as it fulfills the requirement for a maximum of 8GB RAM. Although Model A has lower latency (100ms vs. 200ms), its higher RAM requirement means it cannot be used within the system's memory constraint of 8GB.\",\n \"confidence\": 0.95,\n \"rationale\": \"The key criterion for decision making, given the constraints on hardware resources, is adherence to the maximum available RAM limit (which in this scenario is 8GB). Since Model A exceeds this limit at 16GB, it cannot be selected. On the other hand, Model B does not exceed the allocated amount of 8GB, making it an acceptable choice despite its higher latency.\"\n}",
+        "error": "2 validation errors for RagResponse\nconfidence_score\n  Field required [type=missing, input_value={'answer': \"Based on the ...te its higher latency.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing\nsources_used\n  Field required [type=missing, input_value={'answer': \"Based on the ...te its higher latency.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing",
+        "json_error": null,
+        "question_id": "q4_multihop"
+      },
+      {
+        "success": true,
+        "duration": 5.60022497177124,
+        "json_ok": true,
+        "native_schema_ok": false,
+        "native_response": null,
+        "native_schema_error": "3 validation errors for RagResponse\nanswer\n  Field required [type=missing, input_value={'response': 'Un deadlock...sistemas distribuidos.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing\nconfidence_score\n  Field required [type=missing, input_value={'response': 'Un deadlock...sistemas distribuidos.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing\nsources_used\n  Field required [type=missing, input_value={'response': 'Un deadlock...sistemas distribuidos.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing",
+        "normalized_json_schema_ok": true,
+        "normalized_json_schema_error": null,
+        "canonical_ok": true,
+        "canonical_response": {
+          "answer": "Un deadlock se puede definir en espa\u00f1ol como una situaci\u00f3n en la computaci\u00f3n concorrente donde dos o m\u00e1s procesos se encuentran a la espera de que el otro libere un recurso, o m\u00e1s de dos procesos se encuentran esperando recursos formando una cadena circular. Este problema es com\u00fan en sistemas multitarea, paralelos y sistemas distribuidos.",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "canonical_error": null,
+        "response": {
+          "answer": "Un deadlock se puede definir en espa\u00f1ol como una situaci\u00f3n en la computaci\u00f3n concorrente donde dos o m\u00e1s procesos se encuentran a la espera de que el otro libere un recurso, o m\u00e1s de dos procesos se encuentran esperando recursos formando una cadena circular. Este problema es com\u00fan en sistemas multitarea, paralelos y sistemas distribuidos.",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "parsed_json": {
+          "response": "Un deadlock se puede definir en espa\u00f1ol como una situaci\u00f3n en la computaci\u00f3n concorrente donde dos o m\u00e1s procesos se encuentran a la espera de que el otro libere un recurso, o m\u00e1s de dos procesos se encuentran esperando recursos formando una cadena circular. Este problema es com\u00fan en sistemas multitarea, paralelos y sistemas distribuidos."
+        },
+        "normalized_json": {
+          "answer": "Un deadlock se puede definir en espa\u00f1ol como una situaci\u00f3n en la computaci\u00f3n concorrente donde dos o m\u00e1s procesos se encuentran a la espera de que el otro libere un recurso, o m\u00e1s de dos procesos se encuentran esperando recursos formando una cadena circular. Este problema es com\u00fan en sistemas multitarea, paralelos y sistemas distribuidos.",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "canonical_payload": {
+          "answer": "Un deadlock se puede definir en espa\u00f1ol como una situaci\u00f3n en la computaci\u00f3n concorrente donde dos o m\u00e1s procesos se encuentran a la espera de que el otro libere un recurso, o m\u00e1s de dos procesos se encuentran esperando recursos formando una cadena circular. Este problema es com\u00fan en sistemas multitarea, paralelos y sistemas distribuidos.",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "raw_output": "{\n  \"response\": \"Un deadlock se puede definir en espa\u00f1ol como una situaci\u00f3n en la computaci\u00f3n concorrente donde dos o m\u00e1s procesos se encuentran a la espera de que el otro libere un recurso, o m\u00e1s de dos procesos se encuentran esperando recursos formando una cadena circular. Este problema es com\u00fan en sistemas multitarea, paralelos y sistemas distribuidos.\"\n}",
+        "error": "3 validation errors for RagResponse\nanswer\n  Field required [type=missing, input_value={'response': 'Un deadlock...sistemas distribuidos.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing\nconfidence_score\n  Field required [type=missing, input_value={'response': 'Un deadlock...sistemas distribuidos.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing\nsources_used\n  Field required [type=missing, input_value={'response': 'Un deadlock...sistemas distribuidos.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/missing",
+        "json_error": null,
+        "question_id": "q5_spanish_instruction"
+      }
+    ]
+  },
+  {
+    "model": "ollama:granite3-dense:2b",
+    "json_parse_rate": 0.0,
+    "native_schema_valid_rate": 0.0,
+    "normalized_json_schema_valid_rate": 0.0,
+    "canonical_valid_rate": 100.0,
+    "avg_latency_native": 0,
+    "avg_latency_normalized_json": 0,
+    "avg_latency_canonical": 4.909387254714966,
+    "details": [
+      {
+        "success": true,
+        "duration": 10.746034860610962,
+        "json_ok": false,
+        "native_schema_ok": false,
+        "native_response": null,
+        "native_schema_error": null,
+        "normalized_json_schema_ok": false,
+        "normalized_json_schema_error": null,
+        "canonical_ok": true,
+        "canonical_response": {
+          "answer": "A process is a complete instance of an application with its own address space, memory, and resources. A thread, on the other hand, is the smallest unit of execution within a process, sharing the process's resources like memory and file handles but having its own stack and registers. Context switching between threads is faster than between processes.",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "canonical_error": null,
+        "response": {
+          "answer": "A process is a complete instance of an application with its own address space, memory, and resources. A thread, on the other hand, is the smallest unit of execution within a process, sharing the process's resources like memory and file handles but having its own stack and registers. Context switching between threads is faster than between processes.",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "parsed_json": null,
+        "normalized_json": null,
+        "canonical_payload": {
+          "answer": "A process is a complete instance of an application with its own address space, memory, and resources. A thread, on the other hand, is the smallest unit of execution within a process, sharing the process's resources like memory and file handles but having its own stack and registers. Context switching between threads is faster than between processes.",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "raw_output": "A process is a complete instance of an application with its own address space, memory, and resources. A thread, on the other hand, is the smallest unit of execution within a process, sharing the process's resources like memory and file handles but having its own stack and registers. Context switching between threads is faster than between processes.",
+        "error": "Expecting value: line 1 column 1 (char 0)",
+        "json_error": "Expecting value: line 1 column 1 (char 0)",
+        "question_id": "q1_synthesis"
+      },
+      {
+        "success": true,
+        "duration": 1.0632827281951904,
+        "json_ok": false,
+        "native_schema_ok": false,
+        "native_response": null,
+        "native_schema_error": null,
+        "normalized_json_schema_ok": false,
+        "normalized_json_schema_error": null,
+        "canonical_ok": true,
+        "canonical_response": {
+          "answer": "1. Atomicity, 2. Consistency, and 3. Isolation.",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "canonical_error": null,
+        "response": {
+          "answer": "1. Atomicity, 2. Consistency, and 3. Isolation.",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "parsed_json": null,
+        "normalized_json": null,
+        "canonical_payload": {
+          "answer": "1. Atomicity, 2. Consistency, and 3. Isolation.",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "raw_output": "1. Atomicity, 2. Consistency, and 3. Isolation.",
+        "error": "Extra data: line 1 column 2 (char 1)",
+        "json_error": "Extra data: line 1 column 2 (char 1)",
+        "question_id": "q2_json_list"
+      },
+      {
+        "success": true,
+        "duration": 1.0698320865631104,
+        "json_ok": false,
+        "native_schema_ok": false,
+        "native_response": null,
+        "native_schema_error": null,
+        "normalized_json_schema_ok": false,
+        "normalized_json_schema_error": null,
+        "canonical_ok": true,
+        "canonical_response": {
+          "answer": "The provided context does not contain information on configuring GPUs from AMD Radeon. Therefore, I cannot provide instructions for that. The document only covers the installation of CUDA drivers for NVIDIA GPUs and does not mentionAMD support.",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "canonical_error": null,
+        "response": {
+          "answer": "The provided context does not contain information on configuring GPUs from AMD Radeon. Therefore, I cannot provide instructions for that. The document only covers the installation of CUDA drivers for NVIDIA GPUs and does not mentionAMD support.",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "parsed_json": null,
+        "normalized_json": null,
+        "canonical_payload": {
+          "answer": "The provided context does not contain information on configuring GPUs from AMD Radeon. Therefore, I cannot provide instructions for that. The document only covers the installation of CUDA drivers for NVIDIA GPUs and does not mentionAMD support.",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "raw_output": "The provided context does not contain information on configuring GPUs from AMD Radeon. Therefore, I cannot provide instructions for that. The document only covers the installation of CUDA drivers for NVIDIA GPUs and does not mentionAMD support.",
+        "error": "Expecting value: line 1 column 1 (char 0)",
+        "json_error": "Expecting value: line 1 column 1 (char 0)",
+        "question_id": "q3_faithfulness"
+      },
+      {
+        "success": true,
+        "duration": 8.664548635482788,
+        "json_ok": false,
+        "native_schema_ok": false,
+        "native_response": null,
+        "native_schema_error": null,
+        "normalized_json_schema_ok": false,
+        "normalized_json_schema_error": null,
+        "canonical_ok": true,
+        "canonical_response": {
+          "answer": "Based on the latency requirements and the memory constraints, Model A should be chosen as it has a lower latency (100ms) compared to Model B (200ms). However, due to the hard constraint of 8GB RAM maximum, we cannot use Model A which requires 16GB RAM. Therefore, Model B with a latency of 200ms and requiring only 4GB RAM should be chosen despite its higher latency.\n\nRagResponse:\n{\n  \"answer\": \"Model B\",\n  \"reasoning\": \"has lower latency and is within the memory constraint\"\n}",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "canonical_error": null,
+        "response": {
+          "answer": "Based on the latency requirements and the memory constraints, Model A should be chosen as it has a lower latency (100ms) compared to Model B (200ms). However, due to the hard constraint of 8GB RAM maximum, we cannot use Model A which requires 16GB RAM. Therefore, Model B with a latency of 200ms and requiring only 4GB RAM should be chosen despite its higher latency.\n\nRagResponse:\n{\n  \"answer\": \"Model B\",\n  \"reasoning\": \"has lower latency and is within the memory constraint\"\n}",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "parsed_json": null,
+        "normalized_json": null,
+        "canonical_payload": {
+          "answer": "Based on the latency requirements and the memory constraints, Model A should be chosen as it has a lower latency (100ms) compared to Model B (200ms). However, due to the hard constraint of 8GB RAM maximum, we cannot use Model A which requires 16GB RAM. Therefore, Model B with a latency of 200ms and requiring only 4GB RAM should be chosen despite its higher latency.\n\nRagResponse:\n{\n  \"answer\": \"Model B\",\n  \"reasoning\": \"has lower latency and is within the memory constraint\"\n}",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "raw_output": "Based on the latency requirements and the memory constraints, Model A should be chosen as it has a lower latency (100ms) compared to Model B (200ms). However, due to the hard constraint of 8GB RAM maximum, we cannot use Model A which requires 16GB RAM. Therefore, Model B with a latency of 200ms and requiring only 4GB RAM should be chosen despite its higher latency.\n\nRagResponse:\n{\n  \"answer\": \"Model B\",\n  \"reasoning\": \"has lower latency and is within the memory constraint\"\n}",
+        "error": "Expecting value: line 1 column 1 (char 0)",
+        "json_error": "Expecting value: line 1 column 1 (char 0)",
+        "question_id": "q4_multihop"
+      },
+      {
+        "success": true,
+        "duration": 3.0032379627227783,
+        "json_ok": false,
+        "native_schema_ok": false,
+        "native_response": null,
+        "native_schema_error": null,
+        "normalized_json_schema_ok": false,
+        "normalized_json_schema_error": null,
+        "canonical_ok": true,
+        "canonical_response": {
+          "answer": "A deadlock is a situation in concurrent programming where two or more processes are each waiting for the other to release a resource, or more than two processes are waiting for resources in a circular chain. Deadlock is a common problem in multiprocessing systems, parallel computing, and distributed systems. In Spanish, 'deadlock' means 'bloqueo mortal'.",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "canonical_error": null,
+        "response": {
+          "answer": "A deadlock is a situation in concurrent programming where two or more processes are each waiting for the other to release a resource, or more than two processes are waiting for resources in a circular chain. Deadlock is a common problem in multiprocessing systems, parallel computing, and distributed systems. In Spanish, 'deadlock' means 'bloqueo mortal'.",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "parsed_json": null,
+        "normalized_json": null,
+        "canonical_payload": {
+          "answer": "A deadlock is a situation in concurrent programming where two or more processes are each waiting for the other to release a resource, or more than two processes are waiting for resources in a circular chain. Deadlock is a common problem in multiprocessing systems, parallel computing, and distributed systems. In Spanish, 'deadlock' means 'bloqueo mortal'.",
+          "confidence_score": 0.5,
+          "key_terms": [],
+          "sources_used": true,
+          "reasoning": null
+        },
+        "raw_output": "A deadlock is a situation in concurrent programming where two or more processes are each waiting for the other to release a resource, or more than two processes are waiting for resources in a circular chain. Deadlock is a common problem in multiprocessing systems, parallel computing, and distributed systems. In Spanish, 'deadlock' means 'bloqueo mortal'.",
+        "error": "Expecting value: line 1 column 1 (char 0)",
+        "json_error": "Expecting value: line 1 column 1 (char 0)",
+        "question_id": "q5_spanish_instruction"
+      }
+    ]
+  }
+]

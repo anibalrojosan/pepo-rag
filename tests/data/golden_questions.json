@@ -1,0 +1,58 @@
+[
+  {
+    "id": "q1_synthesis",
+    "question": "Explain the difference between a process and a thread in an operating system.",
+    "context": "A process is an executing instance of an application. It has its own address space, memory, and resources. A thread is the smallest unit of execution within a process. Threads share the process's resources, such as memory and file handles, but have their own stack and registers. Context switching between threads is faster than between processes.",
+    "expected_key_points": [
+      "Process has own address space/resources",
+      "Thread is unit within process",
+      "Threads share resources",
+      "Thread context switch is faster"
+    ],
+    "category": "synthesis"
+  },
+  {
+    "id": "q2_json_list",
+    "question": "List the 3 main components of the ACID properties in databases.",
+    "context": "ACID stands for Atomicity, Consistency, Isolation, and Durability. Atomicity ensures that all operations in a transaction are completed successfully. Consistency ensures that the database properly changes states upon a successfully committed transaction. Isolation enables transactions to operate independently of and transparent to each other. Durability ensures that the result or effect of a committed transaction persists in case of a system failure.",
+    "expected_key_points": [
+      "Atomicity",
+      "Consistency",
+      "Isolation",
+      "Durability"
+    ],
+    "category": "extraction"
+  },
+  {
+    "id": "q3_faithfulness",
+    "question": "How do I configure the GPU for AMD Radeon in this specific NVIDIA-only documentation?",
+    "context": "This guide covers the installation of CUDA drivers for NVIDIA GPUs. Supported models include the GTX 10 series, RTX 20 series, and RTX 30 series. Ensure you have the proprietary NVIDIA drivers installed. There is no mention of AMD support in this document.",
+    "expected_key_points": [
+      "Not mentioned",
+      "NVIDIA only",
+      "Cannot answer based on context"
+    ],
+    "category": "faithfulness"
+  },
+  {
+    "id": "q4_multihop",
+    "question": "Based on the latency requirements and the memory constraints, which model should be chosen?",
+    "context": "Model A has a latency of 100ms but requires 16GB RAM. Model B has a latency of 200ms and requires 4GB RAM. The system has a hard constraint of 8GB RAM maximum.",
+    "expected_key_points": [
+      "Model B",
+      "Model A exceeds memory constraint"
+    ],
+    "category": "reasoning"
+  },
+  {
+    "id": "q5_spanish_instruction",
+    "question": "Explica qué es un 'deadlock' en español.",
+    "context": "A deadlock is a situation in concurrent computing where two or more processes are each waiting for the other to release a resource, or more than two processes are waiting for resources in a circular chain. Deadlock is a common problem in multiprocessing systems, parallel computing, and distributed systems.",
+    "expected_key_points": [
+      "Bloqueo mutuo",
+      "Procesos esperando recursos",
+      "Cadena circular"
+    ],
+    "category": "instruction_following"
+  }
+]

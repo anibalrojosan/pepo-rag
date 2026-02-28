@@ -113,9 +113,54 @@ The embedding model is the "eyes" of the RAG system. We evaluate how well it fin
 
 ---
 
+## 3. Qualitative Evaluation (RAG Quality)
+
+### 3.1 Methodology
+To validate the "intelligence" and reliability of the models, a "Golden Dataset" of 5 technical questions was designed, covering:
+- **Synthesis:** Ability to summarize complex concepts.
+- **Extraction:** Ability to list items in JSON format.
+- **Faithfulness:** Ability to admit lack of information (avoiding hallucinations).
+- **Reasoning:** Ability to connect multiple concepts.
+- **Instruction Following:** Ability to follow language and format constraints.
+
+### 3.2 Results (Automated via PydanticAI)
+
+| Model | Success Rate (JSON) | Avg Latency (s) | Faithfulness | Notes |
+| :--- | :--- | :--- | :--- | :--- |
+| **qwen2.5:3b** | *Pending* | *Pending* | *Pending* | *To be populated* |
+| **granite3-dense:2b** | *Pending* | *Pending* | *Pending* | *To be populated* |
+
+### 3.3 Acceptance Criteria (Phase 2.2)
+
+To compare models fairly while preserving a single canonical API contract (`RagResponse`), the evaluator tracks multiple compliance layers:
+
+- **JSON Parse Rate:** `%` of runs where the raw model output is valid JSON (`json.loads` succeeds).
+- **Native Schema Valid Rate:** `%` of runs where raw parsed JSON already matches `RagResponse` without adaptation.
+- **Normalized JSON Schema Valid Rate:** `%` of runs where parsed JSON becomes valid `RagResponse` after deterministic normalization.
+- **Canonical Valid Rate (App Contract):** `%` of runs where the final adapted payload (JSON-normalized or plain-text adapted) validates as `RagResponse`.
+
+#### Why both schema metrics are required
+
+- **Native** captures strict instruction-following and direct contract compliance.
+- **Normalized JSON** captures how far structured outputs can be recovered from heterogeneous JSON.
+- **Canonical** captures practical production viability for the app contract even when a model returns plain text.
+- Reporting only one of them can be misleading:
+  - Native only may undervalue useful but non-canonical model outputs.
+  - Canonical only may hide poor native schema-following behavior.
+
+#### Production selection rule for the RAG assistant
+
+For model selection in the app, the primary metric is:
+
+- **Canonical Valid Rate (App Contract)**
+
+This reflects real product behavior: the backend must always end with a valid `RagResponse` object for downstream consumers, regardless of whether the model returned strict JSON or plain text.
+
+---
+
 ## Conclusions
 
-Based on the automated benchmark performed on 2026-02-27:
+Based on the automated benchmark performed on 2026-02-27/28:
 
 1.  **Primary Model Selection:** **`qwen2.5:3b`** is kept as the primary model for the RAG system.
     *   **Reasoning:** With ~13.6 TPS, it is still very usable and offers a larger parameter count (3B vs 2B) which may provide better reasoning capabilities for complex queries if Granite proves too simple.
