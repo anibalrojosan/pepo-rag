@@ -125,10 +125,10 @@ To validate the "intelligence" and reliability of the models, a "Golden Dataset"
 
 ### 3.2 Results (Automated via PydanticAI)
 
-| Model | Success Rate (JSON) | Avg Latency (s) | Faithfulness | Notes |
-| :--- | :--- | :--- | :--- | :--- |
-| **qwen2.5:3b** | *Pending* | *Pending* | *Pending* | *To be populated* |
-| **granite3-dense:2b** | *Pending* | *Pending* | *Pending* | *To be populated* |
+| Model | JSON Parse Rate | Native Schema Valid Rate | Normalized JSON Valid Rate | Canonical Valid Rate (App Contract) | Avg Latency (Canonical) |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **Qwen 2.5 3B** | 100.0% | 0.0% | 100.0% | 100.0% | 6.23s |
+| **Granite 3 Dense 2B** | 0.0% | 0.0% | 0.0% | 100.0% | 3.62s |
 
 ### 3.3 Acceptance Criteria (Phase 2.2)
 
@@ -138,6 +138,7 @@ To compare models fairly while preserving a single canonical API contract (`RagR
 - **Native Schema Valid Rate:** `%` of runs where raw parsed JSON already matches `RagResponse` without adaptation.
 - **Normalized JSON Schema Valid Rate:** `%` of runs where parsed JSON becomes valid `RagResponse` after deterministic normalization.
 - **Canonical Valid Rate (App Contract):** `%` of runs where the final adapted payload (JSON-normalized or plain-text adapted) validates as `RagResponse`.
+- **Avg Latency (Canonical):** Average latency of the canonical payload.
 
 #### Why both schema metrics are required
 
