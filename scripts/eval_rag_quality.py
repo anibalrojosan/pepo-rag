@@ -12,10 +12,15 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from app.core.agent_factory import get_rag_agent
 from app.schemas.rag_response import RagResponse
 
+import datetime
+
 # Configuration
 GOLDEN_DATASET_PATH = Path("tests/data/golden_questions.json")
 MODELS_TO_TEST = ["ollama:qwen2.5:3b", "ollama:granite3-dense:2b"]
-OUTPUT_FILE = Path("docs/rag_eval_results.json")
+
+def get_output_path():
+    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    return Path(f"docs/evaluations/rag/eval_results_{timestamp}.json")
 
 def normalize_payload(parsed_json: Dict[str, Any]) -> Dict[str, Any]:
     """
@@ -366,10 +371,11 @@ async def main():
         all_results.append(model_results)
         
     # Save results
-    with open(OUTPUT_FILE, "w") as f:
+    output_file = get_output_path()
+    with open(output_file, "w") as f:
         json.dump(all_results, f, indent=2)
         
-    print(f"\nEvaluation complete. Results saved to {OUTPUT_FILE}")
+    print(f"\nEvaluation complete. Results saved to {output_file}")
     
     # Print summary
     print("\n--- SUMMARY ---")
