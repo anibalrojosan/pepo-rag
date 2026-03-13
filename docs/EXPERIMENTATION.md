@@ -171,3 +171,22 @@ Based on the automated benchmark performed on 2026-02-27/28:
 
 3.  **Hardware Limitations Confirmed:**
     *   Models larger than 3B parameters (like `llama3.1:latest`) struggle significantly, dropping to < 4 TPS with high latency (> 6s TTFT), confirming the initial hypothesis that 8B models are not viable for this specific hardware configuration without heavy quantization or offloading.
+
+---
+
+## 4. Runtime Model Routing Policy
+
+To optimize the balance between speed and reasoning quality on limited hardware (GTX 1050 3GB), a dynamic routing policy has been implemented.
+
+### 4.1 Routing Heuristics
+The system analyzes the user query before selecting the model:
+- **Fast Path (`granite3-dense:2b`):** Selected for simple, short queries (< 150 characters) that don't contain complex reasoning keywords.
+- **Reasoning Path (`qwen2.5:3b`):** Selected for long queries (> 150 characters) or queries containing complex keywords (e.g., "compare", "why", "architect", "step by step").
+
+### 4.2 Fallback Mechanism
+If the primary model fails to produce a valid `RagResponse` (e.g., due to JSON validation errors or timeouts), the system automatically retries with the alternate model. This ensures high reliability (`canonical_valid_rate >= 95%`) even when using smaller, less stable models.
+
+### 4.3 Expected Impact
+- **Latency:** ~30-40% improvement for simple queries by using Granite 2B.
+- **Quality:** Maintained by routing complex questions to the more capable Qwen 3B.
+- **Reliability:** Increased through the automated fallback path.

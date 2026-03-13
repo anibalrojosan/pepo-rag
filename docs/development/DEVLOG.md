@@ -3,11 +3,36 @@
 This document describes the development process of the **PepoRAG** project. It serves as a record of decisions made, lessons learned, problems encountered and resolved, and overall progress.
 
 📑 Table of contents
+* [[2026-03-13] - Phase 2.3: Runtime Model Routing and Reliability Fallback](#2026-03-13---phase-23-runtime-model-routing-and-reliability-fallback)
 * [[2026-03-11] - Refactor: Project Restructuring and Multi-Service Orchestration](#2026-03-11---refactor-project-restructuring-and-multi-service-orchestration)
 * [[2026-02-28] - Phase 2.2: RAG Quality Evals and JSON Compliance](#2026-02-28---phase-22-rag-quality-evals-and-json-compliance)
 * [[2026-02-27] - Phase 2.1: Automated Performance Benchmarking](#2026-02-27---phase-21-automated-performance-benchmarking)
 * [[2026-02-24] - Phase 1: Foundation and Local Inference](#2026-02-24---phase-1-foundation-and-local-inference)
 * [[2026-02-23] - Strategic Definition and Initial Architecture](#2026-02-23---strategic-definition-and-initial-architecture)
+
+---
+
+## [2026-03-13] - Phase 2.3: Runtime Model Routing and Reliability Fallback
+**Context & Goals:**
+Implemented a dynamic model routing policy (Sprint `phase2-03`) to optimize the balance between inference speed and reasoning quality on limited local hardware (GTX 1050 3GB). The goal is to use the fastest model for simple tasks while reserving more capable models for complex technical reasoning.
+
+### Technical Implementation
+*   **Model Router:** Created `backend/app/core/model_router.py` with a simple heuristic-based routing (query length > 150 chars or presence of complex keywords like "compare", "architect", "why").
+*   **Agent Factory Integration:** Updated `backend/app/core/agent_factory.py` to dynamically select models (`granite3-dense:2b` vs `qwen2.5:3b`) based on the user query.
+*   **Reliability Layer:** Implemented `backend/app/core/rag_service.py` with an automated fallback mechanism. If the primary model fails (e.g., JSON validation error), the system retries with the alternate model.
+*   **Observability:** Added structured logging to track routing decisions and fallback events in the backend logs.
+*   **Verification Tooling:** Added `make test-routing` to the root `Makefile` for automated validation of the routing heuristics.
+
+### 💡 Deep Dive: Performance and Resource Efficiency of Heuristic Routing
+During implementation, the efficiency of the heuristic-based router was validated using the `time` utility. The results shown that a code-based it's fast enough for this task. LLM-based router would be slower and more resource-intensive, but will be evaluated in the future:
+1.  **Latency Overhead:** The router logic adds only **~0.33s** of total elapsed time (including Docker overhead), with only **~70ms** of actual CPU processing.
+2.  **Memory Footprint:** The routing process has a peak resident memory (RSS) of only **~28MB**, ensuring it doesn't compete for VRAM or system RAM with the inference engine.
+3.  **Deterministic Reliability:** Unlike using a "router LLM", the heuristic approach is 100% deterministic and adds zero inference cost, preserving all available VRAM for the actual RAG task. It may be enough for the MVP.
+4.  **Fallback Logic:** The ternary fallback condition (`fallback_model = REASONING_MODEL if primary_model == FAST_MODEL else FAST_MODEL`) ensures that even if the lightweight model fails the `RagResponse` contract, the system has a second chance with a more robust model.
+
+### Next Steps
+*   Begin Phase 3: Data Layer & Ingestion.
+*   Implement the document chunking strategy for technical literature.
 
 ---
 

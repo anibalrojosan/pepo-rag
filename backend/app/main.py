@@ -1,5 +1,13 @@
 from fastapi import FastAPI
 from app.core.agent_factory import get_rag_agent
+import logging
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
 
 app = FastAPI()
 
