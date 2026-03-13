@@ -3,11 +3,37 @@
 This document describes the development process of the **PepoRAG** project. It serves as a record of decisions made, lessons learned, problems encountered and resolved, and overall progress.
 
 📑 Table of contents
+* [[2026-03-11] - Refactor: Project Restructuring and Multi-Service Orchestration](#2026-03-11---refactor-project-restructuring-and-multi-service-orchestration)
 * [[2026-02-28] - Phase 2.2: RAG Quality Evals and JSON Compliance](#2026-02-28---phase-22-rag-quality-evals-and-json-compliance)
 * [[2026-02-27] - Phase 2.1: Automated Performance Benchmarking](#2026-02-27---phase-21-automated-performance-benchmarking)
 * [[2026-02-24] - Phase 1: Foundation and Local Inference](#2026-02-24---phase-1-foundation-and-local-inference)
 * [[2026-02-23] - Strategic Definition and Initial Architecture](#2026-02-23---strategic-definition-and-initial-architecture)
 
+---
+
+## [2026-03-11] - Refactor: Project Restructuring and Multi-Service Orchestration
+**Context & Goals:**
+The project was restructured to decouple the Backend and Frontend into independent services. This move improves scalability, simplifies dependency management with `uv` workspaces, and prepares the infrastructure for a multi-container production-like environment.
+
+### Technical Implementation
+*   **Decoupled Architecture:** Created `backend/` and `frontend/` directories, moving existing FastAPI logic and Streamlit code respectively.
+*   **Docker Orchestration:** Updated `docker-compose.yml` to manage three distinct services: `peporag-db` (PostgreSQL/pgvector), `peporag-backend` (FastAPI), and `peporag-frontend` (Streamlit).
+*   **Environment Centralization:** Consolidated configuration into a single root `.env` file, using symbolic links and Docker `env_file` directives to ensure consistency across services.
+*   **Automation:** Introduced a root `Makefile` to simplify common tasks like `make up`, `make down`, and `make health`.
+*   **Dependency Management:** Migrated to a multi-project structure where each service maintains its own `pyproject.toml` and `uv.lock`.
+*   **Retrieval Strategy:** Defined the evolutionary roadmap for the retrieval engine (Vector -> Hybrid -> GraphRAG) and documented it in `ADR-006` and `docs/ROADMAP.md`.
+
+### 💡 Deep Dive: Docker Multi-Service Configuration
+To successfully lift the three services, we implemented several key Docker patterns:
+1.  **Build Contexts:** Used specific `context` paths for `backend/` and `frontend/` to keep images lean, copying only relevant source code.
+2.  **Internal Networking:** Leveraged Docker's default bridge network, allowing the frontend to communicate with the backend using the service name (`http://backend:8000`) instead of hardcoded IPs.
+3.  **Variable Interpolation:** Solved the `.env` visibility issue by ensuring Docker Compose reads the root `.env` for YAML variable substitution (e.g., `${POSTGRES_PORT}`), while passing the same file to containers for runtime environment variables.
+4.  **Healthcheck Strategy:** Integrated a native PostgreSQL healthcheck for the database and established a pattern for manual/automated health verification of the API and UI services.
+
+### Next Steps
+*   Complete the migration of `scripts/` and `tests/` into the `backend/` directory.
+*   Implement the evolutionary retrieval roadmap (Hybrid Search) as defined in `ADR-006`.
+*   Begin Phase 2.3: Document Ingestion Pipeline.
 
 ---
 
