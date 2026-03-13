@@ -2,7 +2,6 @@
 name = "tech-rag-assistant"
 version = "0.1.0"
 description = "RAG assistant for technical books"
-readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "fastapi>=0.132.0",

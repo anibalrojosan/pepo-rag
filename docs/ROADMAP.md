@@ -2,6 +2,22 @@
 
 This roadmap details the development phases for building the local RAG assistant, prioritizing retrieval quality and response speed on local hardware.
 
+## 🗺️ Evolutionary Retrieval Roadmap
+
+I'm building PepoRAG in three evolutionary phases to ensure both speed of delivery and high-quality technical answers:
+
+1.  **Phase 1: Foundation (Current)**
+    *   **Implementation:** Simple Vector RAG using PostgreSQL + `pgvector`.
+    *   **Goal:** Functional MVP for semantic search across technical books.
+
+2.  **Phase 2: Precision (Next Step)**
+    *   **Implementation:** **Hybrid Search** (Full-Text Search + Vector Similarity).
+    *   **Goal:** Solve the "exact match" problem (error codes, specific function names).
+
+3.  **Phase 3: Intelligence (Advanced)**
+    *   **Implementation:** **GraphRAG** (Knowledge Graphs + Vectors).
+    *   **Goal:** Answer multi-hop questions and reason about complex architectural relationships.
+
 ## Phase 1: Foundation & Environment (Setup)
 - [ ] **Project Configuration:** Initialize with `uv` and create `pyproject.toml`.
 - [ ] **Infrastructure:** Configure `docker-compose` for PostgreSQL + `pgvector`.
