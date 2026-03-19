@@ -14,13 +14,23 @@ from app.schemas.rag_response import RagResponse
 
 import datetime
 
-# Configuration
-GOLDEN_DATASET_PATH = Path("tests/data/golden_questions.json")
-MODELS_TO_TEST = ["ollama:qwen2.5:3b"]
+# Configuration (paths relative to repository root)
+_REPO_ROOT = Path(__file__).resolve().parents[2]
+GOLDEN_DATASET_PATH = _REPO_ROOT / "backend" / "tests" / "data" / "golden_questions.json"
+MODELS_TO_TEST = [
+    "ollama:qwen2.5:3b",
+    "ollama:qwen3.5:2b",
+    "ollama:qwen3:4b",
+    "ollama:qwen3:1.7b",
+    "ollama:granite3-dense:2b",
+]
+
 
 def get_output_path():
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    return Path(f"docs/evaluations/rag/qwen_raw_{timestamp}.json")
+    out_dir = _REPO_ROOT / "docs" / "evaluations" / "rag"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    return out_dir / f"qwen_raw_phase2-04_{timestamp}.json"
 
 def normalize_qwen_payload(parsed_json: Dict[str, Any]) -> Dict[str, Any]:
     """
@@ -238,7 +248,7 @@ async def evaluate_model(model_name: str, questions: List[Dict[str, Any]]) -> Di
     Evaluates a single model against the full dataset.
     """
     print(f"Starting evaluation for model: {model_name}")
-    agent = get_rag_agent(model_name)
+    agent = get_rag_agent(model_name=model_name)
     
     results = []
     json_ok_count = 0
