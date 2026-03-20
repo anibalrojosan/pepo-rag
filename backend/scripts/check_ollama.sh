@@ -1,4 +1,10 @@
 #!/bin/bash
+#
+# Quick health check: Ollama HTTP API is reachable and lists local models.
+#
+# Prerequisites: bash, curl, jq; Ollama running (e.g. ollama serve).
+# Usage: from repo root or backend — ./scripts/check_ollama.sh (ensure executable).
+#
 
 OLLAMA_URL="http://localhost:11434/api/tags"
 
