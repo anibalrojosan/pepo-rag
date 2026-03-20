@@ -3,6 +3,7 @@
 This document describes the development process of the **PepoRAG** project. It serves as a record of decisions made, lessons learned, problems encountered and resolved, and overall progress.
 
 📑 Table of contents
+* [[2026-03-20] - Refactor: Offline eval and benchmark package (peporag_eval)](#2026-03-20---refactor-offline-eval-and-benchmark-package-peporag_eval)
 * [[2026-03-19] - Phase 2.4: Qwen 3 and 3.5 Model Re-evaluation (phase2-04)](#2026-03-19---phase-24-qwen-3-and-35-model-re-evaluation-phase2-04)
 * [[2026-03-13] - Phase 2.3: Runtime Model Routing and Reliability Fallback](#2026-03-13---phase-23-runtime-model-routing-and-reliability-fallback)
 * [[2026-03-11] - Refactor: Project Restructuring and Multi-Service Orchestration](#2026-03-11---refactor-project-restructuring-and-multi-service-orchestration)
@@ -10,6 +11,41 @@ This document describes the development process of the **PepoRAG** project. It s
 * [[2026-02-27] - Phase 2.1: Automated Performance Benchmarking](#2026-02-27---phase-21-automated-performance-benchmarking)
 * [[2026-02-24] - Phase 1: Foundation and Local Inference](#2026-02-24---phase-1-foundation-and-local-inference)
 * [[2026-02-23] - Strategic Definition and Initial Architecture](#2026-02-23---strategic-definition-and-initial-architecture)
+
+---
+
+## [2026-03-20] - Refactor: Offline eval and benchmark package (peporag_eval)
+
+### Context & Goals
+
+Reviewing the RAG quality evaluators and the Ollama benchmark, I realized that they had grown into **large, overlapping scripts** under `backend/scripts/`: duplicated JSON normalization (`normalize_payload` vs `normalize_qwen_payload`), two entrypoints for almost the same loop, and benchmark logic mixed with CLI concerns. I decided to make a refactor to separate reusable logic from thin entrypoints, **unify** the two eval modes behind one CLI, and make scripts **self-documenting** for anyone onboarding or re-running Phase 2-style experiments.
+
+### Technical Implementation
+
+*   **New package `backend/peporag_eval/`:** 
+    * `paths.py` (repo-root-relative paths), 
+    * `rag_normalize.py` (single implementation of `normalize_payload` and `normalize_text_output`), 
+    * `ollama_benchmark.py` (heartbeat, streaming HTTP benchmark, JSON aggregate write), 
+    * `rag_eval_runner.py` (`EvalMode` **full** vs **raw_qwen**, `run_single_eval`, `evaluate_model`, `run_eval`).
+*   **Unified CLI:** 
+    * `backend/scripts/eval_rag_quality.py` accepts `--mode full` (default) or `--mode raw-qwen`; 
+    * `backend/scripts/eval_rag_quality_raw_qwen.py` remains a **shim** that calls the same runner for backward compatibility and notebooks.
+*   **Thin wrappers:** `backend/scripts/benchmark_models.py` delegates to `peporag_eval.ollama_benchmark.main()`; eval scripts only adjust `sys.path`, parse args, and `asyncio.run(run_eval(...))`.
+*   **Documentation in tree:** Module docstrings on Python scripts in `backend/scripts/`, comment headers on `check_ollama.sh` and `test_inference.sh`; `SPRINTS.md` and `notebooks/qwen_normalization_explainer.ipynb` updated to mention `--mode raw-qwen`.
+*   **Linting:** `backend/pyproject.toml` adds `per-file-ignores` for `E402` on `scripts/*.py` so imports after the `sys.path` bootstrap stay valid under Ruff.
+
+### 💡 Deep Dive: Why this refactor pays off
+
+*   **Single source of truth:** One normalizer means rule changes (new Qwen/Granite JSON shapes) happen in **one file**, eliminating silent drift between “full” and “raw” evals.
+*   **Easier mental model:** Entrypoints are **short and skimmable**; the heavy flow lives in named modules (`rag_eval_runner`, `ollama_benchmark`) that can be read in order.
+*   **Fair comparison across modes:** **Full** mode measures the **production-shaped** path (including plain-text adaptation to `RagResponse`); **raw-qwen** mode isolates **JSON-only** diagnostics. Both share the same agent prompt loop and golden dataset wiring, so differences are intentional, not copy-paste bugs.
+*   **Future testability:** Pure functions such as `normalize_payload` and benchmark helpers can be **unit-tested** without spinning up Ollama or the full agent stack.
+*   **Discoverability:** Top-of-file docstrings and shell headers answer “what do I run and where do artifacts go?” without opening hundreds of lines of implementation.
+
+### Next Steps
+
+*   Proceed with **Phase 3** (`phase3-00`: embedding and reranking lab) using the same scripts for regression checks when retrieval changes.
+*   Optionally add **focused pytest** coverage for `peporag_eval.rag_normalize`.
 
 ---
 
@@ -21,9 +57,7 @@ After **Qwen 3.5** appeared in the Ollama library, I decided to check if the new
 
 ### Technical Implementation
 
-*   **Benchmark script:** Extended `backend/scripts/benchmark_models.py` with the new model tags, wrote aggregates to repository-root `docs/benchmark_results.json` (path derived from `Path(__file__).resolve().parents[2]`), added **request timeouts**, safer stream handling (final `done` chunk, missing timing fields), and a **heartbeat thread** plus console milestones so long GPU loads do not look like a frozen CLI.
-*   **RAG eval scripts:** Expanded `MODELS_TO_TEST` in `backend/scripts/eval_rag_quality.py` and `backend/scripts/eval_rag_quality_raw_qwen.py`; fixed **`get_rag_agent(model_name=model_name)`** (positional args previously hit `user_query`); resolved **golden dataset** and **`docs/evaluations/rag/`** outputs relative to the repo root; timestamped artifacts with a `phase2-04` filename prefix.
-*   **Documentation:** updated `docs/EXPERIMENTATION.md` with a results table from the new benchmark run, interpretation for limited VRAM, and an explicit decision **not to change** `backend/app/core/model_router.py` yet.
+**Documentation:** updated `docs/EXPERIMENTATION.md` with a results table from the new benchmark run, interpretation for limited VRAM, and an explicit decision **not to change** `backend/app/core/model_router.py` yet.
 
 ### 💡 Deep Dive: Why TTFT Dominated the Qwen 3.5 Run
 
