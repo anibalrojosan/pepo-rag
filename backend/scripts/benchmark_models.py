@@ -77,9 +77,7 @@ def benchmark_model(model_name):
         total_duration = None
         eval_count = None
 
-        heartbeat = _OllamaWaitHeartbeat(
-            f"model `{model_name}` — no stream data yet (loading weights or queued)."
-        )
+        heartbeat = _OllamaWaitHeartbeat(f"model `{model_name}` — no stream data yet (loading weights or queued).")
         try:
             print(
                 f"  Iteration {i + 1}/{ITERATIONS}: sending request to Ollama…",
@@ -174,8 +172,9 @@ def benchmark_model(model_name):
         "avg_tps": statistics.mean([m["tps"] for m in metrics]),
         "avg_ttft": statistics.mean([m["ttft"] for m in metrics]),
         "avg_duration": statistics.mean([m["total_duration"] for m in metrics]),
-        "timestamp": datetime.now().isoformat()
+        "timestamp": datetime.now().isoformat(),
     }
+
 
 def main():
     results = []
@@ -183,14 +182,15 @@ def main():
         res = benchmark_model(model)
         if res:
             results.append(res)
-    
+
     # Save results
     output_file = _REPO_ROOT / "docs" / "benchmark_results.json"
     output_file.parent.mkdir(parents=True, exist_ok=True)
     with open(output_file, "w") as f:
         json.dump(results, f, indent=4)
-    
+
     print(f"\nBenchmarking completed. Results saved in {output_file}")
+
 
 if __name__ == "__main__":
     main()
