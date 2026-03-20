@@ -1,3 +1,15 @@
+"""
+Smoke-test PostgreSQL connectivity and the ``pgvector`` extension.
+
+Loads credentials from ``.env`` (via ``python-dotenv``): ``DB_NAME``, ``DB_USER``,
+``DB_PASSWORD``, ``DB_HOST``, ``DB_PORT``. If connected but ``vector`` is missing,
+attempts ``CREATE EXTENSION IF NOT EXISTS vector`` (requires sufficient DB privileges).
+
+Run from ``backend``::
+
+    uv run python scripts/test_db_conn.py
+"""
+
 import os
 
 import psycopg2

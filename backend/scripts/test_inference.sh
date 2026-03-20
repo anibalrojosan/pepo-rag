@@ -1,7 +1,10 @@
 #!/bin/bash
-
-# This script performs a quick inference test to the Ollama API
-# Useful to verify that the backend can communicate with the model.
+#
+# One-shot non-streaming generation against Ollama (/api/generate) for smoke testing.
+#
+# Prerequisites: bash, curl, jq; Ollama running; model pulled (default MODEL below).
+# Edit MODEL/PROMPT as needed, then run: ./scripts/test_inference.sh
+#
 
 MODEL="llama3.2:3b"
 PROMPT="Respond briefly: What is the capital of Chile?"
