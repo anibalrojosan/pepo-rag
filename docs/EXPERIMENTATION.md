@@ -26,6 +26,37 @@ The benchmark was performed on an entry-level environment with the following det
 
 ---
 
+## Table of Contents
+- [1. Large Language Models (LLMs)](#1-large-language-models-llms)
+  - [1.1 Candidate Models (Ollama)](#11-candidate-models-ollama)
+  - [1.2 Evaluation Methodology](#12-evaluation-methodology)
+    - [1.2.1 Performance Benchmark (Latency)](#121-performance-benchmark-latency)
+    - [1.2.2 Quality Evaluation (Evals)](#122-quality-evaluation-evals)
+  - [1.3 Test Results](#13-test-results)
+  - [1.4 Selected models comparison (2026-02-27)](#14-selected-models-comparison-2026-02-27)
+  - [1.5 Qwen 3 / Qwen 3.5 re-evaluation (2026-03-19, phase2-04)](#15-qwen-3--qwen-35-re-evaluation-2026-03-19-phase2-04)
+    - [1.5.1 Decision: Routing Unchanged](#151-decision-routing-unchanged)
+- [2. Embedding Models (Vectorization)](#2-embedding-models-vectorization)
+  - [2.1 Candidate Models](#21-candidate-models)
+  - [2.2 Evaluation Methodology](#22-evaluation-methodology)
+    - [2.2.1 Retrieval Accuracy](#221-retrieval-accuracy)
+    - [2.2.2 Technical Domain Understanding](#222-technical-domain-understanding)
+    - [2.2.3 Performance](#223-performance)
+  - [2.3 Test Results](#23-test-results)
+- [3. Qualitative Evaluation (RAG Quality)](#3-qualitative-evaluation-rag-quality)
+  - [3.1 Methodology](#31-methodology)
+  - [3.2 Results (Automated via PydanticAI)](#32-results-automated-via-pydanticai)
+  - [3.3 Acceptance Criteria (Phase 2.2)](#33-acceptance-criteria-phase-22)
+    - [Why both schema metrics are required](#why-both-schema-metrics-are-required)
+    - [Production selection rule for the RAG assistant](#production-selection-rule-for-the-rag-assistant)
+- [4. Conclusions](#4-conclusions)
+- [5. Runtime Model Routing Policy](#5-runtime-model-routing-policy)
+  - [5.1 Routing Heuristics](#51-routing-heuristics)
+  - [5.2 Fallback Mechanism](#52-fallback-mechanism)
+  - [5.3 Expected Impact](#53-expected-impact)
+
+---
+
 ## 1. Large Language Models (LLMs)
 
 ### 1.1 Candidate Models (Ollama)
@@ -75,6 +106,25 @@ A mini-dataset of "Golden Questions" based on a sample technical book will be us
 | **qwen2.5:3b** | 13.58 | 1.43 | 25.81 | **Best Balance.** Good speed and likely better reasoning than 2B models. Strong contender. |
 | llama3.2:3b | 8.17 | 2.91 | 33.92 | Acceptable speed, but significantly slower than Granite and Qwen. |
 | llama3.1:latest | 3.75 | 6.08 | 82.07 | **Not Recommended.** Too heavy for current hardware (high latency, low TPS). |
+
+### 1.5 Qwen 3 / Qwen 3.5 re-evaluation (2026-03-19, phase2-04)
+
+Follow-up benchmark on the same machine (GTX 1050 3GB, WSL) after newer Ollama families became available. **Method:** `backend/scripts/benchmark_models.py` → Ollama `POST /api/generate` with `stream: true`, **5 iterations** per model, identical short technical prompt (Python decorators). Aggregates persisted in `docs/benchmark_results.json`.
+
+| Model (Ollama tag) | Avg TPS | Avg TTFT (s) | Avg generation duration (s) | Assessment (this hardware) |
+| :--- | :---: | :---: | :---: | :--- |
+| **granite3-dense:2b** | 19.20 | 1.44 | 13.13 | Still the best **end-to-end responsiveness**; stable after first load. |
+| **qwen3:1.7b** | 27.24 | 20.23 | 26.98 | Highest **throughput** once running, but **mean TTFT ~20s** hurts perceived latency vs Granite / warm Qwen 2.5. |
+| **qwen2.5:3b** | 13.54 | 0.80 | 24.86 | **Warm TTFT** excellent (~0.3s after iteration 1); average skewed by cold start. Remains the **reasoning-path reference**. |
+| **qwen3:4b** | 6.31 | 75.39 | 130.12 | Heavy on 3GB VRAM: **slow TTFT** and long generations. |
+| **qwen3.5:2b** | 6.75 | 202.21 | 242.90 | **Worst interactive profile** here: very high **TTFT** (including multi-minute outliers when the GPU reloads or contends), despite only ~2.7GB on disk. |
+
+**Interpretation:** On this laptop, **granite3-dense:2b** and **qwen2.5:3b** remain the practical pair for fast vs reasoning routes. **qwen3:1.7b** trades a large first-token delay for high tokens/s. **qwen3:4b** and **qwen3.5:2b** are dominated by **load and queue effects** on limited VRAM; they are not attractive replacements for the current routing stack without stronger hardware or a different serving setup.
+
+#### 1.5.1 Decision: Routing Unchanged
+
+- **`model_router.py` is not updated** for this round. The runtime policy stays **fast path → `granite3-dense:2b`**, **reasoning path → `qwen2.5:3b`** (see §4).
+- **Rationale:** Limited **3GB VRAM** and observed **TTFT / wall-clock** for **qwen3:4b** and **qwen3.5:2b** rule them out for production-like chat on this box. **qwen3:1.7b** does not clearly beat the existing reasoning model on **time-to-first-useful-output** once cold starts and TTFT are considered, so we **defer adoption** until hardware improves or a separate quality eval justifies the latency cost.
 
 ---
 
@@ -159,7 +209,7 @@ This reflects real product behavior: the backend must always end with a valid `R
 
 ---
 
-## Conclusions
+## 4. Conclusions
 
 Based on the automated benchmark performed on 2026-02-27/28:
 
@@ -174,19 +224,21 @@ Based on the automated benchmark performed on 2026-02-27/28:
 
 ---
 
-## 4. Runtime Model Routing Policy
+## 5. Runtime Model Routing Policy
 
 To optimize the balance between speed and reasoning quality on limited hardware (GTX 1050 3GB), a dynamic routing policy has been implemented.
 
-### 4.1 Routing Heuristics
+**As of 2026-03-19:** Re-evaluation of **Qwen 3** and **Qwen 3.5** variants confirmed that **heavier or slower** candidates do not justify changing the router on this hardware; targets below remain **`granite3-dense:2b`** and **`qwen2.5:3b`**.
+
+### 5.1 Routing Heuristics
 The system analyzes the user query before selecting the model:
 - **Fast Path (`granite3-dense:2b`):** Selected for simple, short queries (< 150 characters) that don't contain complex reasoning keywords.
 - **Reasoning Path (`qwen2.5:3b`):** Selected for long queries (> 150 characters) or queries containing complex keywords (e.g., "compare", "why", "architect", "step by step").
 
-### 4.2 Fallback Mechanism
+### 5.2 Fallback Mechanism
 If the primary model fails to produce a valid `RagResponse` (e.g., due to JSON validation errors or timeouts), the system automatically retries with the alternate model. This ensures high reliability (`canonical_valid_rate >= 95%`) even when using smaller, less stable models.
 
-### 4.3 Expected Impact
+### 5.3 Expected Impact
 - **Latency:** ~30-40% improvement for simple queries by using Granite 2B.
 - **Quality:** Maintained by routing complex questions to the more capable Qwen 3B.
 - **Reliability:** Increased through the automated fallback path.

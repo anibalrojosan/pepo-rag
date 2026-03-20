@@ -3,12 +3,35 @@
 This document describes the development process of the **PepoRAG** project. It serves as a record of decisions made, lessons learned, problems encountered and resolved, and overall progress.
 
 📑 Table of contents
+* [[2026-03-19] - Phase 2.4: Qwen 3 and 3.5 Model Re-evaluation (phase2-04)](#2026-03-19---phase-24-qwen-3-and-35-model-re-evaluation-phase2-04)
 * [[2026-03-13] - Phase 2.3: Runtime Model Routing and Reliability Fallback](#2026-03-13---phase-23-runtime-model-routing-and-reliability-fallback)
 * [[2026-03-11] - Refactor: Project Restructuring and Multi-Service Orchestration](#2026-03-11---refactor-project-restructuring-and-multi-service-orchestration)
 * [[2026-02-28] - Phase 2.2: RAG Quality Evals and JSON Compliance](#2026-02-28---phase-22-rag-quality-evals-and-json-compliance)
 * [[2026-02-27] - Phase 2.1: Automated Performance Benchmarking](#2026-02-27---phase-21-automated-performance-benchmarking)
 * [[2026-02-24] - Phase 1: Foundation and Local Inference](#2026-02-24---phase-1-foundation-and-local-inference)
 * [[2026-02-23] - Strategic Definition and Initial Architecture](#2026-02-23---strategic-definition-and-initial-architecture)
+
+---
+
+## [2026-03-19] - Phase 2.4: Qwen 3 and 3.5 Model Re-evaluation (phase2-04)
+
+### Context & Goals
+
+After **Qwen 3.5** appeared in the Ollama library, I decided to check if the new family of Qwen models could be a good option for this project, so I ran a benchmark to compare **`qwen3.5:2b`**, **`qwen3:4b`**, and **`qwen3:1.7b`** against the existing stack (**`qwen2.5:3b`**, **`granite3-dense:2b`**) on the same **GTX 1050 3GB** setup. The objective was reproducible **latency** numbers and a documented **go / no-go** decision for updating runtime routing.
+
+### Technical Implementation
+
+*   **Benchmark script:** Extended `backend/scripts/benchmark_models.py` with the new model tags, wrote aggregates to repository-root `docs/benchmark_results.json` (path derived from `Path(__file__).resolve().parents[2]`), added **request timeouts**, safer stream handling (final `done` chunk, missing timing fields), and a **heartbeat thread** plus console milestones so long GPU loads do not look like a frozen CLI.
+*   **RAG eval scripts:** Expanded `MODELS_TO_TEST` in `backend/scripts/eval_rag_quality.py` and `backend/scripts/eval_rag_quality_raw_qwen.py`; fixed **`get_rag_agent(model_name=model_name)`** (positional args previously hit `user_query`); resolved **golden dataset** and **`docs/evaluations/rag/`** outputs relative to the repo root; timestamped artifacts with a `phase2-04` filename prefix.
+*   **Documentation:** updated `docs/EXPERIMENTATION.md` with a results table from the new benchmark run, interpretation for limited VRAM, and an explicit decision **not to change** `backend/app/core/model_router.py` yet.
+
+### 💡 Deep Dive: Why TTFT Dominated the Qwen 3.5 Run
+
+On paper **`qwen3.5:2b`** is only ~2.7GB, but measured **mean TTFT exceeded 200s** and **mean wall time ~243s** per iteration in our harness. That is not explained by parameter count alone: **first-token latency** on a **3GB** card often reflects **weight load**, **VRAM eviction** when switching models, and **Ollama queueing**, not steady-state tokens/sec. The benchmark therefore reports **both** average TPS (generation phase) and TTFT (user-perceived start) much slower for **`qwen3:4b`** and **`qwen3.5:2b`** compared to **`granite3-dense:2b`** and warm **`qwen2.5:3b`**. Keeping **`granite3-dense:2b`** / **`qwen2.5:3b`** in `model_router.py` preserves the best UX for the user until hardware or serving strategy changes.
+
+### Next Steps
+
+*   Proceed with **Phase 3** (`phase3-00`: embedding and reranking lab) and start working on the document chunking strategy for technical literature.
 
 ---
 
