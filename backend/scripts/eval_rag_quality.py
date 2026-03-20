@@ -1,18 +1,18 @@
 import asyncio
 import json
-import time
-from typing import List, Dict, Any
-from pathlib import Path
-import sys
 import os
+import sys
+import time
+from pathlib import Path
+from typing import Any
 
 # Add the project root to sys.path to allow imports from app
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+import datetime
 
 from app.core.agent_factory import get_rag_agent
 from app.schemas.rag_response import RagResponse
-
-import datetime
 
 # Configuration (paths relative to repository root)
 _REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -32,11 +32,12 @@ def get_output_path():
     out_dir.mkdir(parents=True, exist_ok=True)
     return out_dir / f"eval_results_phase2-04_{timestamp}.json"
 
-def normalize_payload(parsed_json: Dict[str, Any]) -> Dict[str, Any]:
+
+def normalize_payload(parsed_json: dict[str, Any]) -> dict[str, Any]:
     """
     Map heterogeneous model JSON shapes into the canonical RagResponse schema.
     """
-    normalized: Dict[str, Any] = {}
+    normalized: dict[str, Any] = {}
 
     answer = None
 
@@ -112,9 +113,7 @@ def normalize_payload(parsed_json: Dict[str, Any]) -> Dict[str, Any]:
             texts = [
                 item.get("text").strip()
                 for item in answers
-                if isinstance(item, dict)
-                and isinstance(item.get("text"), str)
-                and item.get("text").strip()
+                if isinstance(item, dict) and isinstance(item.get("text"), str) and item.get("text").strip()
             ]
             if texts:
                 answer = ", ".join(texts)
@@ -176,7 +175,8 @@ def normalize_payload(parsed_json: Dict[str, Any]) -> Dict[str, Any]:
 
     return normalized
 
-def normalize_text_output(raw_text: str) -> Dict[str, Any]:
+
+def normalize_text_output(raw_text: str) -> dict[str, Any]:
     """
     Build a canonical payload from plain-text responses.
     This is used when a model returns useful text but not JSON.
@@ -190,13 +190,14 @@ def normalize_text_output(raw_text: str) -> Dict[str, Any]:
         "reasoning": None,
     }
 
-async def run_single_eval(agent, question_data: Dict[str, Any]) -> Dict[str, Any]:
+
+async def run_single_eval(agent, question_data: dict[str, Any]) -> dict[str, Any]:
     """
     Runs a single evaluation for a specific question.
     """
     question = question_data["question"]
     context = question_data["context"]
-    
+
     # Construct the prompt with context
     prompt = f"""
     Context:
@@ -205,7 +206,7 @@ async def run_single_eval(agent, question_data: Dict[str, Any]) -> Dict[str, Any
     Question:
     {question}
     """
-    
+
     start_time = time.time()
     try:
         # Use raw text output to evaluate native vs normalized schema compliance.
@@ -234,7 +235,6 @@ async def run_single_eval(agent, question_data: Dict[str, Any]) -> Dict[str, Any
 
         normalized_json_schema_ok = False
         normalized_json_schema_error = None
-        normalized_json_response = None
 
         canonical_ok = False
         canonical_error = None
@@ -251,7 +251,7 @@ async def run_single_eval(agent, question_data: Dict[str, Any]) -> Dict[str, Any
 
             try:
                 normalized_json = normalize_payload(parsed_json)
-                normalized_json_response = RagResponse.model_validate(normalized_json)
+                RagResponse.model_validate(normalized_json)
                 normalized_json_schema_ok = True
             except Exception as ve:
                 normalized_json_schema_error = str(ve)
@@ -309,13 +309,14 @@ async def run_single_eval(agent, question_data: Dict[str, Any]) -> Dict[str, Any
             "json_error": None,
         }
 
-async def evaluate_model(model_name: str, questions: List[Dict[str, Any]]) -> Dict[str, Any]:
+
+async def evaluate_model(model_name: str, questions: list[dict[str, Any]]) -> dict[str, Any]:
     """
     Evaluates a single model against the full dataset.
     """
     print(f"Starting evaluation for model: {model_name}")
     agent = get_rag_agent(model_name=model_name)
-    
+
     results = []
     json_ok_count = 0
     native_schema_ok_count = 0
@@ -324,14 +325,14 @@ async def evaluate_model(model_name: str, questions: List[Dict[str, Any]]) -> Di
     native_total_duration = 0
     normalized_json_total_duration = 0
     canonical_total_duration = 0
-    
+
     for q in questions:
         print(f"  - Testing question: {q['id']}...")
         eval_result = await run_single_eval(agent, q)
-        
+
         eval_result["question_id"] = q["id"]
         results.append(eval_result)
-        
+
         if eval_result["json_ok"]:
             json_ok_count += 1
         if eval_result["native_schema_ok"]:
@@ -353,7 +354,7 @@ async def evaluate_model(model_name: str, questions: List[Dict[str, Any]]) -> Di
     native_schema_valid_rate = (native_schema_ok_count / len(questions)) * 100
     normalized_json_schema_valid_rate = (normalized_json_schema_ok_count / len(questions)) * 100
     canonical_valid_rate = (canonical_ok_count / len(questions)) * 100
-    
+
     return {
         "model": model_name,
         "json_parse_rate": json_parse_rate,
@@ -363,30 +364,31 @@ async def evaluate_model(model_name: str, questions: List[Dict[str, Any]]) -> Di
         "avg_latency_native": avg_latency_native,
         "avg_latency_normalized_json": avg_latency_normalized_json,
         "avg_latency_canonical": avg_latency_canonical,
-        "details": results
+        "details": results,
     }
+
 
 async def main():
     if not GOLDEN_DATASET_PATH.exists():
         print(f"Error: Dataset not found at {GOLDEN_DATASET_PATH}")
         return
 
-    with open(GOLDEN_DATASET_PATH, "r") as f:
+    with open(GOLDEN_DATASET_PATH) as f:
         questions = json.load(f)
-        
+
     all_results = []
-    
+
     for model in MODELS_TO_TEST:
         model_results = await evaluate_model(model, questions)
         all_results.append(model_results)
-        
+
     # Save results
     output_file = get_output_path()
     with open(output_file, "w") as f:
         json.dump(all_results, f, indent=2)
-        
+
     print(f"\nEvaluation complete. Results saved to {output_file}")
-    
+
     # Print summary
     print("\n--- SUMMARY ---")
     for res in all_results:
@@ -399,6 +401,7 @@ async def main():
         print(f"  Avg Latency (Normalized JSON): {res['avg_latency_normalized_json']:.2f}s")
         print(f"  Avg Latency (Canonical): {res['avg_latency_canonical']:.2f}s")
         print("----------------")
+
 
 if __name__ == "__main__":
     asyncio.run(main())

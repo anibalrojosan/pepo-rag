@@ -1,18 +1,18 @@
 import asyncio
 import json
-import time
-from typing import List, Dict, Any
-from pathlib import Path
-import sys
 import os
+import sys
+import time
+from pathlib import Path
+from typing import Any
 
 # Add the project root to sys.path to allow imports from app
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+import datetime
 
 from app.core.agent_factory import get_rag_agent
 from app.schemas.rag_response import RagResponse
-
-import datetime
 
 # Configuration (paths relative to repository root)
 _REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -32,11 +32,12 @@ def get_output_path():
     out_dir.mkdir(parents=True, exist_ok=True)
     return out_dir / f"qwen_raw_phase2-04_{timestamp}.json"
 
-def normalize_qwen_payload(parsed_json: Dict[str, Any]) -> Dict[str, Any]:
+
+def normalize_qwen_payload(parsed_json: dict[str, Any]) -> dict[str, Any]:
     """
     Map variable Qwen JSON shapes into the canonical RagResponse-compatible dict.
     """
-    normalized: Dict[str, Any] = {}
+    normalized: dict[str, Any] = {}
 
     answer = None
 
@@ -112,9 +113,7 @@ def normalize_qwen_payload(parsed_json: Dict[str, Any]) -> Dict[str, Any]:
             texts = [
                 item.get("text").strip()
                 for item in answers
-                if isinstance(item, dict)
-                and isinstance(item.get("text"), str)
-                and item.get("text").strip()
+                if isinstance(item, dict) and isinstance(item.get("text"), str) and item.get("text").strip()
             ]
             if texts:
                 answer = ", ".join(texts)
@@ -149,13 +148,14 @@ def normalize_qwen_payload(parsed_json: Dict[str, Any]) -> Dict[str, Any]:
 
     return normalized
 
-async def run_single_eval(agent, question_data: Dict[str, Any]) -> Dict[str, Any]:
+
+async def run_single_eval(agent, question_data: dict[str, Any]) -> dict[str, Any]:
     """
     Runs a single evaluation for a specific question.
     """
     question = question_data["question"]
     context = question_data["context"]
-    
+
     # Construct the prompt with context
     prompt = f"""
     Context:
@@ -164,7 +164,7 @@ async def run_single_eval(agent, question_data: Dict[str, Any]) -> Dict[str, Any
     Question:
     {question}
     """
-    
+
     start_time = time.time()
     try:
         # Force text output to inspect what Qwen really returns
@@ -240,30 +240,31 @@ async def run_single_eval(agent, question_data: Dict[str, Any]) -> Dict[str, Any
             "parsed_json": None,
             "normalized_json": None,
             "raw_output": "",
-            "error": str(e)
+            "error": str(e),
         }
 
-async def evaluate_model(model_name: str, questions: List[Dict[str, Any]]) -> Dict[str, Any]:
+
+async def evaluate_model(model_name: str, questions: list[dict[str, Any]]) -> dict[str, Any]:
     """
     Evaluates a single model against the full dataset.
     """
     print(f"Starting evaluation for model: {model_name}")
     agent = get_rag_agent(model_name=model_name)
-    
+
     results = []
     json_ok_count = 0
     native_schema_ok_count = 0
     normalized_schema_ok_count = 0
     native_total_duration = 0
     normalized_total_duration = 0
-    
+
     for q in questions:
         print(f"  - Testing question: {q['id']}...")
         eval_result = await run_single_eval(agent, q)
-        
+
         eval_result["question_id"] = q["id"]
         results.append(eval_result)
-        
+
         if eval_result["json_ok"]:
             json_ok_count += 1
         if eval_result["native_schema_ok"]:
@@ -272,7 +273,7 @@ async def evaluate_model(model_name: str, questions: List[Dict[str, Any]]) -> Di
         if eval_result["normalized_schema_ok"]:
             normalized_schema_ok_count += 1
             normalized_total_duration += eval_result["duration"]
-            
+
     avg_latency_native = native_total_duration / native_schema_ok_count if native_schema_ok_count > 0 else 0
     avg_latency_normalized = (
         normalized_total_duration / normalized_schema_ok_count if normalized_schema_ok_count > 0 else 0
@@ -280,7 +281,7 @@ async def evaluate_model(model_name: str, questions: List[Dict[str, Any]]) -> Di
     json_parse_rate = (json_ok_count / len(questions)) * 100
     native_schema_valid_rate = (native_schema_ok_count / len(questions)) * 100
     normalized_schema_valid_rate = (normalized_schema_ok_count / len(questions)) * 100
-    
+
     return {
         "model": model_name,
         "json_parse_rate": json_parse_rate,
@@ -288,30 +289,31 @@ async def evaluate_model(model_name: str, questions: List[Dict[str, Any]]) -> Di
         "normalized_schema_valid_rate": normalized_schema_valid_rate,
         "avg_latency_native": avg_latency_native,
         "avg_latency_normalized": avg_latency_normalized,
-        "details": results
+        "details": results,
     }
+
 
 async def main():
     if not GOLDEN_DATASET_PATH.exists():
         print(f"Error: Dataset not found at {GOLDEN_DATASET_PATH}")
         return
 
-    with open(GOLDEN_DATASET_PATH, "r") as f:
+    with open(GOLDEN_DATASET_PATH) as f:
         questions = json.load(f)
-        
+
     all_results = []
-    
+
     for model in MODELS_TO_TEST:
         model_results = await evaluate_model(model, questions)
         all_results.append(model_results)
-        
+
     # Save results
     output_file = get_output_path()
     with open(output_file, "w") as f:
         json.dump(all_results, f, indent=2)
-        
+
     print(f"\nEvaluation complete. Results saved to {output_file}")
-    
+
     # Print summary
     print("\n--- SUMMARY ---")
     for res in all_results:
@@ -322,6 +324,7 @@ async def main():
         print(f"  Avg Latency (Native): {res['avg_latency_native']:.2f}s")
         print(f"  Avg Latency (Normalized): {res['avg_latency_normalized']:.2f}s")
         print("----------------")
+
 
 if __name__ == "__main__":
     asyncio.run(main())
